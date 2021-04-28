@@ -1,20 +1,15 @@
 Video Processing for dash cams videos
 
-Install in python virtual environment
+Prepare environment
 ```
-# Create virtual environment
-python3 -m venv dataPrep
+# Run script
+bash start.sh
 
-# Activate virtual environment
+# activate virtual environment
 source dataPrep/bin/activate
 ```
 
-Install required package
-``` 
-pip3 install -r requirements.txt 
-```
-
-1. Without models
+1. Video extraction 
 ```  
 python3 video2frame.py -v PATHOFVIDEO -i 5 -o GIVENID -c STARTINGIMAGENUMBER -f FRAMERATE
 ``` 
@@ -34,11 +29,7 @@ User want to extract image every 5 second from a 30 fps video on path ../data/da
 python3 video2frame.py -v ../data/dashcam.MP4 -i 5 -o dummy -c 10 -f 30 
 ``` 
 
-2. With models
-''' '''
-Flags:
-
-3. Convert PNG to JPG or JPEG
+2. Convert PNG to JPG or JPEG
 ```
 python3 convert_png2jpg.py --image test.png 
 ```
