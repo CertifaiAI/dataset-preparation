@@ -32,3 +32,6 @@ Convert PNG to JPG or JPEG
 ```
 python3 convert_png2jpg.py --image test.png 
 ```
+
+### TO DO List
+- [ ] Plate detection script
