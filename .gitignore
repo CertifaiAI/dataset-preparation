@@ -1,0 +1,7 @@
+dataPrep/ 
+
+data/*
+
+scripts/__pycache__
+scripts/extract_no_model.py
+scripts/test.py
