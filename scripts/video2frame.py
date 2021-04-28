@@ -4,6 +4,7 @@ import os
 import argparse
 from os import path
 import imutils
+import uuid
 
 # arguements
 ap = argparse.ArgumentParser()
@@ -11,9 +12,7 @@ ap.add_argument("-v", "--video", required=True,
 	help="path to input video file")
 ap.add_argument("-i", "--interval", default=1, 
 	help="interval (in seconds) between captured frames")
-ap.add_argument("-o", "--output", required=True,
-	help="output name for output images")
-ap.add_argument("-c", "--counter", required=True,
+ap.add_argument("-c", "--counter", default=1,
 	help="starting count number")
 ap.add_argument("-f", "--frames", default=30,
 	help="frame rates of video file")
@@ -22,10 +21,10 @@ args = vars(ap.parse_args())
 def video_to_frames():
     # initialize variables and constants
     interval = int(args['interval'])
-    output_name = str(args['output'])
     counter = int(args['counter'])
     vid_path = args['video']
     frame_rate = int(args['frames'])
+    id = uuid.uuid4()
 
     frame_rate = frame_rate * interval
     saved_time = 0
@@ -56,7 +55,7 @@ def video_to_frames():
         # if frame count reach 30 again -> take frame
         if frame_count == frame_rate:
             frame = imutils.resize(frame, width=800)
-            cv2.imwrite("images/{}_{}.jpg".format(output_name, counter), frame)
+            cv2.imwrite("images/{}_{}.jpg".format(id, counter), frame)
             # Set frame count to 0 
             frame_count = 0
             counter+= 1
