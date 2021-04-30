@@ -27,7 +27,8 @@ User want to extract image every 5 second from a 30 fps video on path ../data/da
 ```  
 python3 video2frame.py -v ../data/dashcam.MP4 -i 5 -f 30 
 ``` 
-Video to images extraction using Yolov4-tiny pretrained model
+Video to images extraction using Yolov4-tiny pretrained model 
+
 ####You can use colob notebook [here](https://colab.research.google.com/drive/1auYpS0jC4KJuV7rdnrpkJApJm0vDk7mb?usp=sharing).
 ####Please make a copy before you run the codes on colab.
 
