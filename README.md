@@ -27,6 +27,9 @@ User want to extract image every 5 second from a 30 fps video on path ../data/da
 ```  
 python3 video2frame.py -v ../data/dashcam.MP4 -i 5 -f 30 
 ``` 
+Video to images extraction using Yolov4-tiny pretrained model
+Codes on repo 
+
 
 Convert PNG to JPG or JPEG
 ```
