@@ -1,6 +1,6 @@
 # Tools for data preparations
 
-Prepare environment
+Prepare environment (linux)
 ```
 # Run script
 bash start.sh
@@ -8,6 +8,8 @@ bash start.sh
 # activate virtual environment
 source dataPrep/bin/activate
 ```
+Prepare environment (windows)
+
 
 Video to images extraction 
 ```  
