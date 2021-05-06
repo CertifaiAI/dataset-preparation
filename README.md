@@ -40,5 +40,11 @@ Convert PNG to JPG or JPEG
 python3 convert_png2jpg.py --image test.png 
 ```
 
+Rename images with random ID
+```
+python3 rename.py --dir images
+```
+dir = path of directory for captured photospython3 rename.py --dir images
+
 ### TO DO List
 - [ ] Plate detection script
