@@ -19,17 +19,22 @@ ap.add_argument("-f", "--frames", default=30,
 args = vars(ap.parse_args())
 
 def video_to_frames():
-    # initialize variables and constants
+    # Initialize variables and constants
     interval = int(args['interval'])
     counter = int(args['counter'])
     vid_path = args['video']
     frame_rate = int(args['frames'])
+    # Get random id
     id = uuid.uuid4()
-
-    frame_rate = frame_rate * interval
-    saved_time = 0
+    # Target frame
+    '''
+    Target frame = frame rate * interval(in seconds)
+    for example, given the video is 30 per seconds, so each second will have more or less 30 frames. If interval (seconds) is 1. The script
+    will save the frame every 30 frames (30*1). if interval is 5s. The script will save frame every 150 frame.
+    '''
+    target_frame= frame_rate * interval
     
-    # make directory if not exist
+    # Make directory if not exist
     cwd = os.getcwd()
     if not path.exists(cwd+'/images'):
         os.mkdir(cwd+'/images')
@@ -44,7 +49,6 @@ def video_to_frames():
     video_length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) - 1
     print ("Number of frames: ", video_length)
     count = 0
-    # Take first frame
     frame_count = frame_rate
     print ("Converting video..\n")
 
@@ -53,13 +57,15 @@ def video_to_frames():
         # Extract the frame
         ret, frame = cap.read()
         # if frame count reach 30 again -> take frame
-        if frame_count == frame_rate:
+        if frame_count == target_frame:
+            # Resize image to 800
             frame = imutils.resize(frame, width=800)
             cv2.imwrite("images/{}_{}.jpg".format(id, counter), frame)
             # Set frame count to 0 
             frame_count = 0
             counter+= 1
-        count = count + 1
+        # Counting total number of frames
+        count += 1
         frame_count += 1
         # If there are no more frames left
         if (count > (video_length-1)):
