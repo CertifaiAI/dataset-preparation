@@ -56,7 +56,7 @@ def rename_image(dir, new_dir):
 
             # Get full path of image from old path
             oldAbsolute = get_relative_path(dir)
-            oldPath = newPath = (str(oldAbsolute) + '/' + fileName)
+            oldPath = (str(oldAbsolute) + '/' + fileName)
             
             # Get full path of image from new path
             newAbsolute = get_relative_path(new_dir)
