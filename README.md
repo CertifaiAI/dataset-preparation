@@ -44,7 +44,7 @@ Rename images with random ID
 ```
 python3 rename.py --dir images
 ```
-dir = path of directory for captured photospython3 rename.py --dir images
+dir = path of directory for captured photos
 
 ### TO DO List
 - [ ] Plate detection script
