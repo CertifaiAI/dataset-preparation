@@ -51,14 +51,23 @@ dir = path of directory for captured photos
  python3 imgAug.py --dir trial --dest result -R -B --bright 2.0 -F
 ```
 dir = path of data directory to perform augmentation
+
 dest = path of directory to store result
+
 bright = value of brightness
+
 noise = value of noise 
+
 degree = degree of rotation
+
 N = use noise augmentation
+
 R = use rotation augmentation
+
 B = use brighness or darkness augmentation
+
 F = use flip augmentation
+
 Please refer to the code for further explaination 
 
 
