@@ -7,3 +7,5 @@ scripts/extract_no_model.py
 scripts/test.py
 scripts/images
 scripts/renamed
+scripts/result
+scripts/trial

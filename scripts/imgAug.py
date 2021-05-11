@@ -7,6 +7,11 @@ There are 4 augmentation methods
 2. Add brightness or remove brightness
 3. Rotate
 4. Horizontal Flip
+
+References:
+https://www.freecodecamp.org/news/image-augmentation-make-it-rain-make-it-snow-how-to-modify-a-photo-with-machine-learning-163c0cb3843f/
+https://github.com/aleju/imgaug
+
 '''
 
 import imageio
@@ -22,6 +27,7 @@ from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
 import argparse
 import os
 from pathlib import Path
+import cv2
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -48,10 +54,52 @@ def add_noise(image, noise):
     noise_image=gaussian_noise.augment_image(image)
     return noise_image
 
-# def sheer_image(image, bbs):
-#     scale_im=iaa.Affine(scale={"x": (1.5, 1.0), "y": (1.5, 1.0)})
-#     scale_image, bbs_aug=scale_im(image=image, bounding_boxes=bbs)
-#     return scale_image, bbs_aug
+def add_snow(image):    
+    image_HLS = cv2.cvtColor(image,cv2.COLOR_RGB2HLS) 
+    ## Conversion to HLS    
+    image_HLS = np.array(image_HLS, dtype = np.float64)     
+    brightness_coefficient = 2.5     
+    snow_point=140 ## increase this for more snow    
+    image_HLS[:,:,1][image_HLS[:,:,1]<snow_point] = image_HLS[:,:,1][image_HLS[:,:,1]<snow_point]*brightness_coefficient 
+    ## scale pixel values up for channel 1(Lightness)    
+    image_HLS[:,:,1][image_HLS[:,:,1]>255]  = 255 
+    ##Sets all values above 255 to 255    
+    image_HLS = np.array(image_HLS, dtype = np.uint8)    
+    image_RGB = cv2.cvtColor(image_HLS,cv2.COLOR_HLS2RGB) 
+    ## Conversion to RGB    
+    return image_RGB
+
+def generate_random_lines(imshape,slant,drop_length):    
+    drops=[]    
+    for i in range(1500): 
+        ## If You want heavy rain, try increasing this        
+        if slant<0:            
+            x= np.random.randint(slant,imshape[1])        
+        else:            
+            x= np.random.randint(0,imshape[1]-slant)        
+            y= np.random.randint(0,imshape[0]-drop_length)        
+            drops.append((x,y))    
+    return drops            
+    
+def add_rain(image):        
+    imshape = image.shape    
+    slant_extreme=10    
+    # slant= np.random.randint(-slant_extreme,slant_extreme)
+    slant = 8
+    # print(slant)     
+    drop_length=20    
+    drop_width=2    
+    drop_color=(200,200,200) 
+    ## a shade of gray    
+    rain_drops= generate_random_lines(imshape,slant,drop_length)        
+    for rain_drop in rain_drops:        
+        cv2.line(image,(rain_drop[0],rain_drop[1]),(rain_drop[0]+slant,rain_drop[1]+drop_length),drop_color,drop_width)    
+    image= cv2.blur(image,(7,7))  ## rainy view are blurry        
+    brightness_coefficient = 0.7 ## rainy days are usually shady     
+    image_HLS = cv2.cvtColor(image,cv2.COLOR_RGB2HLS) ## Conversion to HLS    
+    image_HLS[:,:,1] = image_HLS[:,:,1]*brightness_coefficient ## scale pixel values down for channel 1(Lightness)    
+    image_RGB = cv2.cvtColor(image_HLS,cv2.COLOR_HLS2RGB) ## Conversion to RGB    
+    return image_RGB
 
 def rotate_img(image, bbs, degree):
     rotate_bb=iaa.Affine(rotate=(degree))
@@ -84,6 +132,8 @@ args.add_argument("-N", type=str2bool, nargs='?', const=True, default=False, hel
 args.add_argument("-R", type=str2bool, nargs='?', const=True, default=False, help="use rotate")
 args.add_argument("-B", type=str2bool, nargs='?', const=True, default=False, help="use brightness contrast")
 args.add_argument("-F", type=str2bool, nargs='?', const=True, default=False, help="use flip image")
+args.add_argument("-Rain", type=str2bool, nargs='?', const=True, default=False, help="add raining effect to image")
+args.add_argument("-Snow", type=str2bool, nargs='?', const=True, default=False, help="add snow effect to image")
 cfg = args.parse_args()
 
 def main():
@@ -132,6 +182,13 @@ def main():
             if cfg.N:
                 # Add noise -> higher more noise
                 image = add_noise(image, noise=float(cfg.noise))
+
+            if cfg.Snow:
+                image = add_snow(image)
+
+            if cfg.Rain:
+                # Add noise -> higher more noise
+                image = add_rain(image)
 
             if cfg.B:
                 # Change brightness on image only -> higher darker (3.0)
