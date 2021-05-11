@@ -97,15 +97,18 @@ def main():
     # Filter through all file and organize to specific category
     for fileName in all_files:
         if fileName[-3:] == 'jpg' or fileName[-3:] == 'png':
-            image_files.append(fileName[:-4])
+            image_files.append(fileName)
         elif fileName[-4:] == 'jpeg':
             image_files.append(fileName)
 
     # Assume txt file has the same name as image
     for names in image_files:
-        image_path = str(path) + '/' + names + '.jpg'
+        imgFormat = names[-3:]
+        names = names[:-4]
+        # print(imgFormat)
+        image_path = str(path) + '/' + names + '.' + imgFormat
         anno_path = str(path) + '/' + names + '.txt'
-        new_image_path = str(new_path) + '/' + names + 'aug.jpg'
+        new_image_path = str(new_path) + '/' + names + 'aug.' + imgFormat
         new_anno_path = str(new_path) + '/' + names + 'aug.txt'
 
         # Extract coordinates from txt file

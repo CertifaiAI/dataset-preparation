@@ -41,7 +41,7 @@ def rename_image(dir, new_dir):
             
             # Get full path of image from new path
             newAbsolute = get_relative_path(new_dir)
-            newName = str(id) + '-'+ str(count) + '.' + imgFormat
+            newName = str(id) + '_'+ str(count) + '.' + imgFormat
             newPath = (str(newAbsolute) + '/' + newName)
 
             # increment count
