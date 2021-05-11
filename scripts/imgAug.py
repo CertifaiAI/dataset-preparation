@@ -81,12 +81,9 @@ def generate_random_lines(imshape,slant,drop_length):
             drops.append((x,y))    
     return drops            
     
-def add_rain(image):        
-    imshape = image.shape    
-    slant_extreme=10    
-    # slant= np.random.randint(-slant_extreme,slant_extreme)
-    slant = 8
-    # print(slant)     
+def add_rain(image, slant):        
+    imshape = image.shape
+    # Rain drop numbers
     drop_length=20    
     drop_width=2    
     drop_color=(200,200,200) 
@@ -128,6 +125,7 @@ args.add_argument('--dest', help="Path to save directory", required=True)
 args.add_argument('--bright', help="brightness value for image, more than 3 will be dark", default=0.5, type=float)
 args.add_argument('--noise', help="noise value for image, higher will have more noise", default=90, type=float)
 args.add_argument('--degree', help="degree value for rotation", default=10, type=float)
+args.add_argument('--slant', help="number of raindrops, higher is more rain", default=8, type=int)
 args.add_argument("-N", type=str2bool, nargs='?', const=True, default=False, help="use noise")
 args.add_argument("-R", type=str2bool, nargs='?', const=True, default=False, help="use rotate")
 args.add_argument("-B", type=str2bool, nargs='?', const=True, default=False, help="use brightness contrast")
@@ -188,7 +186,7 @@ def main():
 
             if cfg.Rain:
                 # Add noise -> higher more noise
-                image = add_rain(image)
+                image = add_rain(image, slant=int(cfg.slant))
 
             if cfg.B:
                 # Change brightness on image only -> higher darker (3.0)
