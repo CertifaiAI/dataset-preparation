@@ -31,7 +31,7 @@ def rename_image(dir, new_dir):
     id = uuid.uuid4()
     all_files = os.listdir(os.path.abspath(dir))
     for fileName in all_files:
-        if fileName[-3:] == 'jpg' or fileName[-3:] == 'png':
+        if fileName[-3:] == 'jpg' or fileName[-3:] == 'png' or fileName[-3:] == 'JPG':
             # picture format
             imgFormat = fileName[-3:]
             
