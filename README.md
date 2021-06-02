@@ -70,6 +70,11 @@ F = use flip augmentation
 
 Please refer to the code for further explaination 
 
+## Remove '_jpg', '_JPG', '_jpeg' from filenames
+```
+python3 remove_jpg.py --dir PATH_TO_DIRECTORY
+```
+dir = path to folder
 
 ### TO DO List
 - [ ] Plate detection script
