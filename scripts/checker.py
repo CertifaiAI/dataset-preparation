@@ -10,9 +10,9 @@ if __name__ == '__main__':
     files_in_dir = os.listdir(root_dir)
     log_file = open("unsupported_images.txt", "w+")
 
-    original_path = os.getcwd()    # user also can modify the path they want save their unsupported images, exp : "C:\\Users\\ken\\Documents"
+    targeted_path = os.getcwd()    # user also can modify the path they want save their unsupported images, exp : change the os.getcwd() to "C:\\Users\\ken\\Documents"
     directory = "UnsupportedImg"
-    path = os.path.join(original_path, directory)
+    path = os.path.join(targeted_path, directory)
     os.mkdir(path)
     
     for file in files_in_dir:
