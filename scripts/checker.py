@@ -23,7 +23,7 @@ import shutil
 supported_image_ext = ('png', 'bmp', 'jpeg')
 
 if __name__ == '__main__':
-    root_dir = "."
+root_dir = "."
     files_in_dir = os.listdir(root_dir)
     log_file = open("unsupported_images.txt", "w+")
 

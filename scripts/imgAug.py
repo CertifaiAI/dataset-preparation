@@ -32,7 +32,7 @@ https://github.com/aleju/imgaug
 
 '''
 
-import imageio
+impor t imageio
 import imgaug as ia
 import imgaug.augmenters as iaa
 import numpy as np
