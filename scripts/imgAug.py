@@ -1,12 +1,13 @@
 '''
-This script perform data augmentation with bouding boxes for object detection project
+This script perform data augmentation with bounding boxes for object detection project
 Support Yolo txt file format 
 
 There are 4 augmentation methods
 1. Add noise
-2. Add brightness or remove brightness
-3. Rotate
-4. Horizontal Flip
+2. Add rain
+3. Add brightness or remove brightness
+4. Rotate
+5. Horizontal Flip
 
 References:
 https://www.freecodecamp.org/news/image-augmentation-make-it-rain-make-it-snow-how-to-modify-a-photo-with-machine-learning-163c0cb3843f/
@@ -28,6 +29,7 @@ import argparse
 import os
 from pathlib import Path
 import cv2
+import random
 
 def str2bool(v):
     if isinstance(v, bool):
@@ -40,6 +42,8 @@ def str2bool(v):
         raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def change_brightness(image, gamma_value):
+    if gamma_value==-1:
+        gamma_value = np.random.uniform(2.0,2.6)
     contrast=iaa.GammaContrast(gamma=gamma_value)
     contrast_image =contrast.augment_image(image)
     return contrast_image
@@ -50,6 +54,8 @@ def horizontal_flip(image, bbs):
     return flip_hr_image, bbs_aug
 
 def add_noise(image, noise):
+    if noise==-1:
+        noise = np.random.randint(40,80)
     gaussian_noise=iaa.AdditiveGaussianNoise(10,noise)
     noise_image=gaussian_noise.augment_image(image)
     return noise_image
@@ -71,26 +77,29 @@ def add_snow(image):
 
 def generate_random_lines(imshape,slant,drop_length):    
     drops=[]    
-    for i in range(1500): 
+    for i in range(800):
         ## If You want heavy rain, try increasing this        
         if slant<0:            
-            x= np.random.randint(slant,imshape[1])        
+            x= np.random.randint(slant,imshape[1])
         else:            
             x= np.random.randint(0,imshape[1]-slant)        
-            y= np.random.randint(0,imshape[0]-drop_length)        
-            drops.append((x,y))    
+        y= np.random.randint(0,imshape[0]-drop_length)
+        drops.append((x,y))
     return drops            
     
-def add_rain(image, slant):        
+def add_rain(image, slant):
+    if slant==-1:
+        slant = random.randint(-10, 10)
     imshape = image.shape
     # Rain drop numbers
-    drop_length=20    
-    drop_width=2    
+    drop_length=random.randint(10, 15)
+    drop_width=1
     drop_color=(200,200,200) 
     ## a shade of gray    
     rain_drops= generate_random_lines(imshape,slant,drop_length)        
-    for rain_drop in rain_drops:        
-        cv2.line(image,(rain_drop[0],rain_drop[1]),(rain_drop[0]+slant,rain_drop[1]+drop_length),drop_color,drop_width)    
+    for rain_drop in rain_drops:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB) # Adding this line solves the "Overload resolution" error van-back
+        cv2.line(image,(rain_drop[0],rain_drop[1]),(rain_drop[0]+slant,rain_drop[1]+drop_length),drop_color,drop_width)
     image= cv2.blur(image,(7,7))  ## rainy view are blurry        
     brightness_coefficient = 0.7 ## rainy days are usually shady     
     image_HLS = cv2.cvtColor(image,cv2.COLOR_RGB2HLS) ## Conversion to HLS    
@@ -99,6 +108,8 @@ def add_rain(image, slant):
     return image_RGB
 
 def rotate_img(image, bbs, degree):
+    if degree==-1:
+        degree = np.random.randint(-10,10)
     rotate_bb=iaa.Affine(rotate=(degree))
     image_aug, bbs_aug = rotate_bb(image=image, bounding_boxes=bbs)
     return image_aug, bbs_aug
@@ -144,20 +155,25 @@ def main():
 
     # Filter through all file and organize to specific category
     for fileName in all_files:
-        if fileName[-3:] == 'jpg' or fileName[-3:] == 'png':
+        if fileName[-3:] == 'jpg' or fileName[-3:] == 'png' or fileName[-3:] == 'JPG':
             image_files.append(fileName)
         elif fileName[-4:] == 'jpeg':
             image_files.append(fileName)
 
     # Assume txt file has the same name as image
+    # Cant get names of "jpeg" images because of the 4 characters
     for names in image_files:
-        imgFormat = names[-3:]
-        names = names[:-4]
+        if names[-3:] == 'jpg' or names[-3:] == 'png' or names[-3:] == 'JPG':
+            imgFormat = names[-3:]
+            names = names[:-4]
+        elif names[-4:] == 'jpeg':
+            imgFormat = names[-4:]
+            names = names[:-5]
         # print(imgFormat)
         image_path = str(path) + '/' + names + '.' + imgFormat
         anno_path = str(path) + '/' + names + '.txt'
-        new_image_path = str(new_path) + '/' + names + 'aug.' + imgFormat
-        new_anno_path = str(new_path) + '/' + names + 'aug.txt'
+        # new_image_path = str(new_path) + '/' + names + 'aug.' + imgFormat
+        # new_anno_path = str(new_path) + '/' + names + 'aug.txt'
 
         # Extract coordinates from txt file
         txt_file = open(anno_path, 'r')
@@ -180,6 +196,8 @@ def main():
             if cfg.N:
                 # Add noise -> higher more noise
                 image = add_noise(image, noise=float(cfg.noise))
+                new_image_path = str(new_path) + '/' + names + 'Noise.' + imgFormat
+                new_anno_path = str(new_path) + '/' + names + 'Noise.txt'
 
             if cfg.Snow:
                 image = add_snow(image)
@@ -187,22 +205,28 @@ def main():
             if cfg.Rain:
                 # Add noise -> higher more noise
                 image = add_rain(image, slant=int(cfg.slant))
+                new_image_path = str(new_path) + '/' + names + 'Rain.' + imgFormat
+                new_anno_path = str(new_path) + '/' + names + 'Rain.txt'
 
             if cfg.B:
                 # Change brightness on image only -> higher darker (3.0)
                 image = change_brightness(image, gamma_value=float(cfg.bright))
+                new_image_path = str(new_path) + '/' + names + 'Night.' + imgFormat
+                new_anno_path = str(new_path) + '/' + names + 'Night.txt'
 
             # Augmentation on bounding box and image
             if cfg.R:
                 # Rotate image
                 image, bbs = rotate_img(image, bbs, degree=float(cfg.degree))
+                new_image_path = str(new_path) + '/' + names + 'Rotate.' + imgFormat
+                new_anno_path = str(new_path) + '/' + names + 'Rotate.txt'
 
             if cfg.F:
                 # flipping image horizontally
                 image, bbs = horizontal_flip(image, bbs)
 
             # Sanity Check
-            ia.imshow(bbs.draw_on_image(image, size=2))
+           # ia.imshow(bbs.draw_on_image(image, size=2))
 
             # extract coordinates from BoundingBoxesOnImage class
             x_min, y_min = bbs[0][0]
