@@ -13,7 +13,9 @@ if __name__ == '__main__':
     targeted_path = os.getcwd()    # user also can modify the path they want save their unsupported images, exp : change the os.getcwd() to "C:\\Users\\ken\\Documents"
     directory = "UnsupportedImg"
     path = os.path.join(targeted_path, directory)
-    os.mkdir(path)
+
+    if not os.path.exists("UnsupportedImg"):
+        os.mkdir(path)
     
     for file in files_in_dir:
         if os.path.isfile(file):
