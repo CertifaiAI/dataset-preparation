@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
@@ -31,8 +31,8 @@ jobs:
           # Look to see if there is a cache hit for the corresponding requirements file
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
           restore-keys: |
-          ${{ runner.os }}-pip-
-          ${{ runner.os }}-
+            ${{ runner.os }}-pip-
+            ${{ runner.os }}-
 
       - name: Install dependencies
         run: |
