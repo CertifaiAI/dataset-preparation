@@ -14,7 +14,7 @@ if __name__ == '__main__':
     directory = "UnsupportedImg"
     path = os.path.join(targeted_path, directory)
 
-    if path == None:
+    if not os.path.exists("UnsupportedImg"):
         os.mkdir(path)
     
     for file in files_in_dir:
