@@ -75,6 +75,3 @@ Please refer to the code for further explaination
 python3 remove_jpg.py --dir PATH_TO_DIRECTORY
 ```
 dir = path to folder
-
-### TO DO List
-- [ ] Plate detection script
