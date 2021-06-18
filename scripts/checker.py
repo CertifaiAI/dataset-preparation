@@ -16,8 +16,6 @@ if __name__ == '__main__':
 
     if path == None:
         os.mkdir(path)
-    else:
-        pass
     
     for file in files_in_dir:
         if os.path.isfile(file):
