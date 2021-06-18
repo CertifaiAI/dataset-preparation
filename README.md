@@ -77,7 +77,9 @@ python3 remove_jpg.py --dir PATH_TO_DIRECTORY
 dir = path to folder
 
 ## Train, Test, Split scripts for object detections
+```
 python train_test_valid.py --dir experiments --train_out train --test_out test --valid_out valid
+```
 dir         = directory of database
 train_out   = path of train dataset output
 test_out    = path of ts
