@@ -10,6 +10,9 @@
     <a href="https://sonarcloud.io/dashboard?id=CertifaiAI_dataset-preparation">
         <img alt="Bugs Count" src="https://sonarcloud.io/api/project_badges/measure?project=CertifaiAI_dataset-preparation&metric=bugs">
     </a>
+    <a href="https://sonarcloud.io/dashboard?id=CertifaiAI_dataset-preparation">
+        <img alt="Code Smell" src="https://sonarcloud.io/api/project_badges/measure?project=CertifaiAI_dataset-preparation&metric=code_smells">
+    </a>
  </p>
 
 Prepare environment (linux)
