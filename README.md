@@ -1,5 +1,20 @@
 # Tools for data preparations
 
+<p align="left">
+    <a href="https://github.com/CertifaiAI/dataset-preparation/blob/main/LICENSE">
+        <img alt="License" src="https://img.shields.io/github/license/CertifaiAI/dataset-preparation">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=CertifaiAI_dataset-preparation">
+        <img alt="Quality Gate" src="https://sonarcloud.io/api/project_badges/measure?project=CertifaiAI_dataset-preparation&metric=alert_status">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=CertifaiAI_dataset-preparation">
+        <img alt="Bugs Count" src="https://sonarcloud.io/api/project_badges/measure?project=CertifaiAI_dataset-preparation&metric=bugs">
+    </a>
+    <a href="https://sonarcloud.io/dashboard?id=CertifaiAI_dataset-preparation">
+        <img alt="Code Smell" src="https://sonarcloud.io/api/project_badges/measure?project=CertifaiAI_dataset-preparation&metric=code_smells">
+    </a>
+ </p>
+
 Prepare environment (linux)
 ```
 # Run script
